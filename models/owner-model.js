@@ -9,7 +9,7 @@ const ownerSchema = mongoose.Schema({
         trim:true,
     },
     email: String,
-    passwoed:String,
+    password:String,
     products: String,
     contact:Number,
     pic: String,

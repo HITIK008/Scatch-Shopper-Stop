@@ -32,6 +32,6 @@ app.get('/', (req, res) => {
     res.send('Welcome');
 })
 
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+app.listen(3003, () => {
+    console.log('Server is running on http://localhost:3002');
 });
