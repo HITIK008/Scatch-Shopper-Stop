@@ -1,21 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-// mongoose.connect('mongodb://127.0.0.1:27017/shops');
-
-const productSchema = mongoose.Schema({
-    image:String,
-    name: String,
-    price: Number,
-    discount: Number,
-    // description: String,
-    // category: String,
-    bgcolor:String,
-    textcolor:String,
-    pannalcolor:String,
-    stock: Number,
-
-
-
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  discount: { type: Number, default: 0 },
+  bgcolor: { type: String, default: "#ffffff" },
+  panelcolor: { type: String, default: "#ffffff" },
+  textcolor: { type: String, default: "#000000" },
+  image: { type: Buffer, required: true },
+  description: { type: String, default: "No description available." },
 });
 
-module.exports = mongoose.model('product',productSchema);
+module.exports = mongoose.model("product", productSchema);

@@ -1,0 +1,109 @@
+<%- include('./partials/header') %>
+
+<div class="w-full min-h-screen flex flex-col items-center justify-center bg-gray-100 py-10">
+  <h3 class="text-4xl font-extrabold text-gray-800 mb-6 tracking-wide">Checkout</h3>
+
+  <!-- Success/Error Messages -->
+  <% if (success.length > 0) { %>
+    <div class="absolute top-6 left-1/2 transform -translate-x-1/2 p-4 rounded-lg bg-green-500 text-white shadow-lg transition-opacity duration-300">
+      <span class="block text-center font-medium"><%= success %></span>
+    </div>
+  <% } %>
+  <% if (error.length > 0) { %>
+    <div class="absolute top-6 left-1/2 transform -translate-x-1/2 p-4 rounded-lg bg-red-500 text-white shadow-lg transition-opacity duration-300">
+      <span class="block text-center font-medium"><%= error %></span>
+    </div>
+  <% } %>
+
+  <div class="w-full max-w-2xl bg-white rounded-xl shadow-2xl p-8 border border-gray-200">
+    <h4 class="text-2xl font-semibold text-gray-700 mb-6">Total Amount: ₹<%= bill %></h4>
+
+    <form id="payment-form" method="POST" class="space-y-6">
+      <div>
+        <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-2">Payment Method:</label>
+        <select id="payment_method" name="payment_method" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+          <option value="card">Card</option>
+          <option value="upi">UPI</option>
+          <option value="netbanking">Net Banking</option>
+          <option value="wallet">Wallet</option>
+        </select>
+      </div>
+
+      <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+      <input type="hidden" name="razorpay_order_id" value="<%= order.id %>">
+      <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+      <input type="hidden" name="cvv" id="cvv_hidden">
+      <input type="hidden" name="mobile" id="mobile_hidden">
+
+      <div>
+        <label for="cvv" class="block text-sm font-medium text-gray-700 mb-2">CVV (required for card)</label>
+        <input type="text" id="cvv" placeholder="CVV (3 digits)" pattern="\d{3}" title="CVV must be 3 digits" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+      </div>
+
+      <div>
+        <label for="mobile" class="block text-sm font-medium text-gray-700 mb-2">Mobile Number</label>
+        <input type="text" id="mobile" placeholder="Mobile Number (10 digits)" required pattern="\d{10}" title="Mobile must be 10 digits" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+      </div>
+
+      <button type="button" id="rzp-button" class="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200">Pay Now</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById("rzp-button").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const cvv = document.getElementById("cvv").value;
+    const mobile = document.getElementById("mobile").value;
+    const paymentMethod = document.getElementById("payment_method").value;
+
+    if (!mobile || !/^\d{10}$/.test(mobile)) {
+      alert("Please enter a valid mobile number (10 digits).");
+      return;
+    }
+
+    if (paymentMethod === "card" && (!cvv || cvv.length !== 3)) {
+      alert("Please enter a valid CVV (3 digits) for card payments.");
+      return;
+    }
+
+    document.getElementById("cvv_hidden").value = cvv;
+    document.getElementById("mobile_hidden").value = mobile;
+
+    const options = {
+      key: "<%= key_id %>",
+      amount: "<%= bill * 100 %>",
+      currency: "INR",
+      name: "Scratch Shopper Stop",
+      description: "Purchase",
+      order_id: "<%= order.id %>",
+      handler: function (response) {
+        document.getElementById("razorpay_payment_id").value = response.razorpay_payment_id;
+        document.getElementById("razorpay_signature").value = response.razorpay_signature;
+        document.getElementById("payment-form").action = "/users/payment/verify";
+        document.getElementById("payment-form").submit();
+      },
+      prefill: {
+        name: "<%= user.fullname %>",
+        email: "<%= user.email %>",
+        contact: mobile,
+      },
+      notes: {
+        address: "<%= user.address || 'No address' %>",
+      },
+      theme: {
+        color: "#528FF0",
+      },
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      alert("Payment failed: " + response.error.description);
+    });
+    rzp1.open();
+  });
+</script>
+
+<%- include('./partials/footer') %>

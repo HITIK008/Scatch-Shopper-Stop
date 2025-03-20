@@ -1,0 +1,36 @@
+<%- include('./partials/header') %>
+
+<% var error = typeof error !== "undefined" ? error : ''; %>
+
+<% if(error.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= error %></span>
+  </div>
+<% } %>
+<div class="flex justify-end mr-6 text-green-600 text-2xl font-semibold">
+    <a href="/users">Go to Home</a>
+</div>
+
+<div class="w-full h-screen flex flex-col items-center justify-center px-20">
+  <div class="w-full flex justify-center items-center mb-10">
+    <h3 class="text-4xl font-semibold">
+      Admin Login - <span class="text-blue-400">Scatch Shopper Stop</span>
+    </h3>
+  </div>
+  
+  <div class="w-1/3 flex items-center justify-center">
+    <div class="w-full px-8 py-6 bg-white shadow-lg rounded-lg">
+      <h4 class="text-2xl capitalize mb-5 text-center">Login Your Admin Account</h4>
+      <form autocomplete="off" action="/admin/login" method="post">
+        <input class="block bg-zinc-100 w-full px-4 py-3 border-[1px] rounded-md mb-3 border-zinc-200" 
+               type="email" placeholder="Email" name="email">
+        <input class="block bg-zinc-100 w-full px-4 py-3 border-[1px] rounded-md mb-3 border-zinc-200" 
+               type="password" placeholder="Password" name="password">
+        <input class="px-5 block w-full rounded-full py-3 mt-2 bg-blue-500 text-white text-lg font-semibold cursor-pointer" 
+               type="submit" value="Login">
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

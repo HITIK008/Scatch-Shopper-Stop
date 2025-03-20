@@ -1,16 +1,22 @@
-const mongoose = require('mongoose');
-const dbgr = require('debug')('development:mongoose');
-const config = require('config');
+const mongoose = require("mongoose");
 
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/shops");
 
-//environment value upper depend
-mongoose
-.connect(`${config.get("MONGODB_URI")}`)
-.then(function(){
-    dbgr("Connected to MongoDB");
-})
-.catch(function(err){
-    dbgr("Could not connect to MongoDB",err);
+mongoose.connection.on("connected", () => {
+  console.log("Connected to MongoDB");
 });
 
-module.exports = mongoose.connection;
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.log("MongoDB disconnected");
+});
+
+process.on("SIGINT", async () => {
+  await mongoose.connection.close();
+  process.exit(0);
+});
+
+module.exports = mongoose;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scratch Shopper Stop</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="font-['helvetica_now_display']">
+  <nav class="w-full flex justify-between px-5 py-3 bg-white shadow-md">
+    <h3 class="text-xl font-bold text-gray-800">Scatch Shopper Stop</h3>
+    <div class="flex gap-5 items-center">
+      <!-- Always show these links -->
+      <a href="/" class="text-gray-700 hover:text-blue-500">Home</a>
+      <a href="/users/about" class="text-gray-700 hover:text-blue-500">About</a>
+      <a href="/users/contact" class="text-gray-700 hover:text-blue-500">Contact</a>
+
+      <% var loggedin = typeof loggedin !== "undefined" ? loggedin : false; %>
+      <% if (loggedin) { %>
+        <!-- Show these only for logged-in users -->
+        <a href="/users/cart" class="text-gray-700 hover:text-blue-500">Cart</a>
+        <a href="/users/profile" class="text-gray-700 hover:text-blue-500">Profile</a>
+        <a href="/users/logout" class="text-red-500 hover:text-red-700">Logout</a>
+      <% } else { %>
+        <!-- Show these only for non-logged-in users -->
+        <a href="/users/register" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm">Register</a>
+        <a href="/users/login" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm">Login</a>
+      <% } %>
+    </div>
+  </nav>
+</body>
+</html>

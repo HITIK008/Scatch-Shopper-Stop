@@ -1,0 +1,59 @@
+<%- include('./partials/header') %>
+
+<% var success = typeof success !== "undefined" ? success : ''; %>
+<% var error = typeof error !== "undefined" ? error : ''; %>
+
+<% if(success.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= success %></span>
+  </div>
+<% } %>
+<% if(error.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= error %></span>
+  </div>
+<% } %>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+    <h2 class="text-2xl font-bold mb-6 text-center">Your Cart</h2>
+    <% if (products && products.length > 0) { %>
+      <div class="space-y-4">
+        <% let total = 0; %>
+        <% products.forEach(function(product, index) { %>
+          <% const quantity = cartItems[index].quantity; %>
+          <% const itemTotal = (product.price - (product.discount || 0)) * quantity; %>
+          <% total += itemTotal; %>
+          <div class="flex items-center justify-between border-b pb-4">
+            <div class="flex items-center">
+              <img class="w-20 h-20 object-cover rounded" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+              <div class="ml-4">
+                <h3 class="text-lg font-semibold"><%= product.name %></h3>
+                <p class="text-gray-600">₹ <%= product.price - (product.discount || 0) %></p>
+                <% if (product.discount > 0) { %>
+                  <p class="text-gray-500">Discount: ₹ <%= product.discount %></p>
+                <% } %>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <a href="/users/cart/decrease/<%= product._id %>" class="w-8 h-8 flex items-center justify-center rounded bg-red-500 text-white">-</a>
+              <span class="text-lg font-semibold"><%= quantity %></span>
+              <a href="/users/cart/increase/<%= product._id %>" class="w-8 h-8 flex items-center justify-center rounded bg-green-500 text-white">+</a>
+              <p class="text-lg font-semibold">₹ <%= itemTotal %></p>
+            </div>
+          </div>
+        <% }) %>
+        <div class="flex justify-between items-center mt-6">
+          <h3 class="text-xl font-bold">Total: ₹ <%= total %></h3>
+          <form action="/users/checkout" method="POST">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Checkout</button>
+          </form>
+        </div>
+      </div>
+    <% } else { %>
+      <p class="text-center text-gray-500">Your cart is empty.</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

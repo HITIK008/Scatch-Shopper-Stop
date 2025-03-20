@@ -1,0 +1,57 @@
+<%- include('partials/admin-header') %>
+
+<div class="min-h-screen flex flex-col bg-gray-50">
+  <div class="container px-10 py-20 flex flex-grow">
+    <!-- Main Content -->
+    <main class="w-full bg-white p-8 shadow-lg rounded-lg">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">All Orders</h2>
+
+      <!-- Search Bar -->
+      <div class="mb-6">
+        <form action="/admin/orders" method="GET" class="relative">
+          <input type="text" name="search" value="<%= search || '' %>" placeholder="Search by user email..." class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 7.65 7.5 7.5 0 0116.65 16.65z"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Orders List -->
+      <% if (users && users.length > 0) { %>
+        <% users.forEach(user => { %>
+          <% if (user.orders && user.orders.length > 0) { %>
+            <div class="mb-8">
+              <h3 class="text-lg font-semibold text-gray-700 mb-4">
+                <%= user.fullname %> (<%= user.email %>)
+              </h3>
+              <% user.orders.forEach(order => { %>
+                <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
+                  <p class="text-gray-600">Order ID: <%= order.order_id %></p>
+                  <p class="text-gray-600">Date: <%= order.date.toLocaleDateString() %></p>
+                  <p class="text-gray-600">Total: ₹<%= order.total.toFixed(2) %></p>
+                  <h5 class="text-sm font-medium text-gray-700 mt-2">Items:</h5>
+                  <ul class="list-disc list-inside text-gray-600">
+                    <% if (order.items && order.items.length > 0) { %>
+                      <% order.items.forEach(item => { %>
+                        <li><%= item.name %> - ₹<%= (item.price - (item.discount || 0)).toFixed(2) %></li>
+                      <% }) %>
+                    <% } else { %>
+                      <li>No items found for this order.</li>
+                    <% } %>
+                  </ul>
+                  <a href="/admin/invoice/<%= order.order_id %>" class="mt-2 inline-block px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200">Download Invoice</a>
+                </div>
+              <% }) %>
+            </div>
+          <% } %>
+        <% }) %>
+      <% } else { %>
+        <p class="text-gray-500">No orders found.</p>
+      <% } %>
+    </main>
+  </div>
+</div>
+
+<%- include('partials/admin-footer') %>

@@ -1,0 +1,28 @@
+<%- include('./partials/header') %>
+
+<% var error = typeof error !== "undefined" ? error : ''; %>
+
+<% if(error.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= error %></span>
+  </div>
+<% } %>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="text-center">
+    <h1 class="text-4xl font-bold mb-4">Welcome to Scatch Shopper Stop</h1>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="/users/register" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Register</a>
+      <a href="/users/login" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Login</a>
+      <a href="/users/about" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">About</a>
+      <a href="/users/contact" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Contact</a>
+      <a href="/admin" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Admin Login</a>
+      <% if(loggedin) { %>
+        <a href="/users/logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Logout</a>
+        <a href="/users/shop" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Shop</a>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

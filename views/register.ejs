@@ -1,0 +1,121 @@
+<%- include('./partials/header') %>
+
+<% var error = typeof error !== "undefined" ? error : ''; %>
+
+<% if(error.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= error %></span>
+  </div>
+<% } %>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
+    <form action="/users/register" method="post" id="registerForm">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="fullname">Full Name</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="fullname" name="fullname" type="text" placeholder="Full Name" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="email" placeholder="Email" required>
+        <p id="emailError" class="text-red-500 text-sm mt-2 hidden">Email must not contain capital letters</p>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="Password" required>
+        <p id="passwordFormatError" class="text-red-500 text-sm mt-2 hidden">Password must contain at least one capital letter, one special character, and one number</p>
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">Confirm Password</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" required>
+        <p id="passwordError" class="text-red-500 text-sm mt-2 hidden">Passwords do not match</p>
+      </div>
+      <div class="flex items-center justify-between">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+          Register
+        </button>
+        <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/users/login">
+          Already have an account? Login
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById("registerForm");
+  const email = document.getElementById("email");
+  const emailError = document.getElementById("emailError");
+  const password = document.getElementById("password");
+  const confirmPassword = document.getElementById("confirmPassword");
+  const passwordError = document.getElementById("passwordError");
+  const passwordFormatError = document.getElementById("passwordFormatError");
+
+  // Real-time email validation (no capital letters)
+  email.addEventListener("input", function () {
+    const hasUpperCase = /[A-Z]/.test(email.value);
+    if (hasUpperCase) {
+      emailError.classList.remove("hidden");
+      email.classList.add("border-red-500");
+    } else {
+      emailError.classList.add("hidden");
+      email.classList.remove("border-red-500");
+    }
+  });
+
+  // Real-time password format validation
+  password.addEventListener("input", function () {
+    const hasUpperCase = /[A-Z]/.test(password.value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password.value);
+    const hasNumber = /[0-9]/.test(password.value);
+    if (!hasUpperCase || !hasSpecialChar || !hasNumber) {
+      passwordFormatError.classList.remove("hidden");
+      password.classList.add("border-red-500");
+    } else {
+      passwordFormatError.classList.add("hidden");
+      password.classList.remove("border-red-500");
+    }
+  });
+
+  // Real-time password matching validation
+  confirmPassword.addEventListener("input", function () {
+    if (password.value !== confirmPassword.value) {
+      passwordError.classList.remove("hidden");
+      confirmPassword.classList.add("border-red-500");
+    } else {
+      passwordError.classList.add("hidden");
+      confirmPassword.classList.remove("border-red-500");
+    }
+  });
+
+  // Prevent form submission if validations fail
+  form.addEventListener("submit", function (e) {
+    // Email validation
+    const hasUpperCaseEmail = /[A-Z]/.test(email.value);
+    if (hasUpperCaseEmail) {
+      e.preventDefault();
+      emailError.classList.remove("hidden");
+      email.classList.add("border-red-500");
+    }
+
+    // Password format validation
+    const hasUpperCase = /[A-Z]/.test(password.value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password.value);
+    const hasNumber = /[0-9]/.test(password.value);
+    if (!hasUpperCase || !hasSpecialChar || !hasNumber) {
+      e.preventDefault();
+      passwordFormatError.classList.remove("hidden");
+      password.classList.add("border-red-500");
+    }
+
+    // Password matching validation
+    if (password.value !== confirmPassword.value) {
+      e.preventDefault();
+      passwordError.classList.remove("hidden");
+      confirmPassword.classList.add("border-red-500");
+    }
+  });
+</script>
+
+<%- include('./partials/footer') %>

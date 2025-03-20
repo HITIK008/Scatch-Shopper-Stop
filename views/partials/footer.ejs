@@ -1,0 +1,22 @@
+<footer class="w-full bg-gray-800 text-white py-4">
+  <div class="container mx-auto text-center">
+    <p>© 2025 Scratch Shopper Stop. All rights reserved.</p>
+  </div>
+
+  <!-- Chatbot -->
+  <div class="fixed bottom-5 right-5 flex flex-col items-end">
+    <div id="chatbot-body" class="hidden flex-col w-96 h-[28rem] bg-gray-50 rounded-xl shadow-xl overflow-hidden border border-gray-200">
+      <div class="bg-blue-600 text-white p-3 flex justify-between items-center">
+        <span class="font-semibold">Scatch Shopper Assistant</span>
+        <button id="chatbot-close" class="text-xl font-bold hover:text-gray-200">×</button>
+      </div>
+      <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto bg-gray-100"></div>
+      <input id="chatbot-input" type="text" placeholder="Ask me anything..." class="w-full p-3 border-t border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <button id="chatbot-open" class="mt-3 w-14 h-14 flex items-center justify-center rounded-full bg-blue-600 text-white text-3xl font-bold hover:bg-blue-700 transition">+</button>
+  </div>
+</footer>
+
+<script src="/javascripts/chatbot.js"></script>
+</body>
+</html>

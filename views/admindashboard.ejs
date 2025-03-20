@@ -1,0 +1,73 @@
+<%- include('./partials/header') %>
+
+<% var success = typeof success !== "undefined" ? success : ''; %>
+<% var error = typeof error !== "undefined" ? error : ''; %>
+
+<% if(success.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= success %></span>
+  </div>
+<% } %>
+<% if(error.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= error %></span>
+  </div>
+<% } %>
+
+<div class="min-h-screen flex flex-col">
+  <div class="container px-10 py-20 flex flex-grow">
+    <div class="w-[25%] flex h-screen flex-col items-start">
+      <div class="flex flex-col">
+        <a class="block w-fit mb-2" href="/admin/dashboard">Dashboard</a>
+        <a class="block w-fit mb-2" href="/admin/create">Create New Product</a>
+        <a class="block w-fit mb-2" href="/admin/adminprofile">Profile</a>
+        <a class="block w-fit mb-2" href="/admin/orders">Orders</a>
+        <a class="block w-fit mb-2 text-red-500" href="/admin/logout">Logout</a>
+      </div>
+    </div>
+    <main class="w-3/4 bg-white p-8 shadow ml-4">
+      <h2 class="text-xl font-bold mb-4">Scratch Shopper Stop</h2>
+      <div class="flex justify-between items-center mb-4">
+        <h3>All Products</h3>
+        <a href="/admin/delete-all" class="text-red-500">Delete all</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <% if (typeof products !== "undefined" && products.length > 0) { %>
+          <% products.forEach(function(product) { %>
+            <div class="w-60 relative border rounded-lg shadow-md">
+              <div class="w-full h-52 flex items-center justify-center" style="background-color: <%= product.bgcolor %>;">
+                <% if (product.image) { %>
+                  <img class="h-[12rem] object-cover" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                <% } else { %>
+                  <span>No Image</span>
+                <% } %>
+              </div>
+              <div class="flex justify-between items-center px-4 py-4" style="background-color: <%= product.panelcolor %>; color: <%= product.textcolor %>;">
+                <div>
+                  <h3 class="text-lg font-semibold"><%= product.name %></h3>
+                  <div class="flex items-center space-x-2">
+                    <% if (product.discount > 0) { %>
+                      <h4 class="line-through opacity-70">₹ <%= product.price %></h4>
+                      <h4 class="font-bold" style="color: #16a34a;">₹ <%= product.price - product.discount %></h4>
+                    <% } else { %>
+                      <h4 class="font-bold">₹ <%= product.price %></h4>
+                    <% } %>
+                  </div>
+                  <h5 class="text-sm opacity-80">Discount: ₹ <%= product.discount || 0 %></h5>
+                </div>
+                <a href="/admin/delete/<%= product._id %>" class="w-7 h-7 flex items-center justify-center rounded-full bg-red-500 text-white">-</a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-center text-gray-500 col-span-full">No products available.</p>
+        <% } %>
+      </div>
+      <div class="mt-4">
+        <a href="/admin/create" class="inline-block px-4 py-2 bg-blue-500 text-white rounded">Create new product</a>
+      </div>
+    </main>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

@@ -1,0 +1,86 @@
+<%- include('./partials/header') %>
+
+<div class="min-h-screen bg-gray-100 py-10">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-6">Contact Us</h1>
+    
+    <!-- Flash Message Container -->
+    <div id="flash-message" class="hidden px-4 py-2 rounded text-center mb-4"></div>
+
+    <p class="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+      We’d love to hear from you! Whether you have a question, feedback, or need assistance, feel free to reach out to us. Our team is here to help you 24/7.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Get in Touch</h2>
+        <p class="text-gray-600 mb-2"><strong>Email:</strong> support@scratchshopperstop.com</p>
+        <p class="text-gray-600 mb-2"><strong>Phone:</strong> +1-800-555-1234</p>
+        <p class="text-gray-600"><strong>Address:</strong> 123 Shopping Lane, E-Commerce City, EC 12345</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Send Us a Message</h2>
+        <form id="contactForm" class="space-y-4">
+          <div>
+            <input type="text" id="name" name="name" placeholder="Your Name" class="w-full p-2 border rounded" required>
+          </div>
+          <div>
+            <input type="email" id="email" name="email" placeholder="Your Email" class="w-full p-2 border rounded" required>
+          </div>
+          <div>
+            <textarea id="message" name="message" placeholder="Your Message" rows="4" class="w-full p-2 border rounded" required></textarea>
+          </div>
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Send Message</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <p class="text-gray-600">Follow us on social media for updates:</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="ri-facebook-fill"></i></a>
+        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="ri-twitter-fill"></i></a>
+        <a href="#" class="text-red-500 hover:text-red-700"><i class="ri-instagram-fill"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("contactForm").addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevent form from reloading the page
+
+    // Get form data
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    // Send data via Fetch API
+    try {
+      const response = await fetch("/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const result = await response.json();
+
+      // Flash message container
+      const flashMessage = document.getElementById("flash-message");
+      flashMessage.classList.remove("hidden");
+      flashMessage.classList.add(response.ok ? "bg-green-100 text-green-700 border border-green-400" : "bg-red-100 text-red-700 border border-red-400");
+      flashMessage.innerHTML = `<strong>${response.ok ? "Success!" : "Error!"}</strong> ${result.message}`;
+
+      if (response.ok) {
+        // Reset form on success
+        document.getElementById("contactForm").reset();
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  });
+</script>
+
+<%- include('./partials/footer') %>
