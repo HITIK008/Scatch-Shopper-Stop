@@ -197,28 +197,11 @@ Please ensure your code follows the existing style and includes appropriate test
 
 ---
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## Contact
 
-- **Email:** support@scratchshopperstop.com
-- **GitHub Issues:** [Open an Issue](https://github.com/your-username/Scratch-Shopper-Stop/issues)
-- **Project Maintainer:** [Your Name](https://github.com/your-username)
+- **Email:** hitikpatel13@gmail.com
 
 ---
 
 **Happy Shopping with Scratch Shopper Stop!** 🛒
 
----
-
-### Notes for You:
-1. **Logo & Screenshots:** Replace placeholders (e.g., `public/image/logo.png`, `screenshots/*.png`) with actual files if available. If not, you can remove those lines or add them later.
-2. **Customization:** Update the GitHub URL (`your-username`) and maintainer details with your info.
-3. **Badges:** The tech stack badges use Shields.io for a professional look. You can customize them further at [shields.io](https://shields.io/).
-4. **Structure:** The README follows GitHub best practices with clear sections, badges, and a table of contents for easy navigation.
-
-Let me know if you'd like any tweaks or additional sections!
