@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const chatbotMessages = document.getElementById("chatbot-messages");
   const chatbotInput = document.getElementById("chatbot-input");
+  const chatbotSubmit = document.getElementById("chatbot-submit"); // New Submit button
   const chatbotOpen = document.getElementById("chatbot-open");
   const chatbotClose = document.getElementById("chatbot-close");
   const chatbotBody = document.getElementById("chatbot-body");
@@ -42,11 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  chatbotOpen.addEventListener("click", toggleChatbot);
-  chatbotClose.addEventListener("click", toggleChatbot);
-
-  chatbotInput.addEventListener("keypress", function (e) {
-    if (e.key === "Enter" && chatbotInput.value.trim()) {
+  // Function to handle message submission
+  function submitMessage() {
+    if (chatbotInput.value.trim()) {
       const userQuery = chatbotInput.value.trim().toLowerCase();
       addMessage(userQuery, true);
 
@@ -56,7 +55,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       chatbotInput.value = "";
     }
+  }
+
+  // Submit on Enter key
+  chatbotInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      submitMessage();
+    }
   });
+
+  // Submit on button click
+  chatbotSubmit.addEventListener("click", submitMessage);
+
+  chatbotOpen.addEventListener("click", toggleChatbot);
+  chatbotClose.addEventListener("click", toggleChatbot);
 
   // Initial Message
   addMessage("Hi! I'm here to assist you with shopping queries. How can I help?");

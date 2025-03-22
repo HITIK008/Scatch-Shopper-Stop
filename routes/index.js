@@ -66,7 +66,7 @@ router.get("/cart", isloggedin, async function (req, res) {
     }
 
     const bill = Number(user.cart[0].price + 20 - Number(user.cart[0].discount));
-    res.render("cart", { user, bill }); // ✅ Corrected rendering
+    res.render("cart", { user, bill })
   } catch (err) {
     console.error(err);
     res.status(500).send("Error loading cart");
