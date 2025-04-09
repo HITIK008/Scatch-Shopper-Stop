@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node --trace-deprecation app.js"
+    "start": "node app.js",
+    "build": "echo 'No build step required'"
   },
   "keywords": [],
   "author": "",

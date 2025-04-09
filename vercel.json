@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "app.js",
+        "use": "@vercel/node",
+        "config": { "includeFiles": ["views/**", "public/**"] }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "app.js"
+      }
+    ],
+    "env": {
+      "MONGO_URI": "@mongo_uri",
+      "RAZORPAY_KEY_ID": "@razorpay_key_id",
+      "RAZORPAY_KEY_SECRET": "@razorpay_key_secret",
+      "SESSION_SECRET": "@session_secret"
+    }
+  }
