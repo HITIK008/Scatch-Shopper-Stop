@@ -43,7 +43,7 @@ app.use("/products", productsRouter);
 app.use("/contact", contactRouter);
 app.use("/", indexRouter);
 
-const PORT = process.env.PORT || 3023;
+const PORT = process.env.PORT || 3024;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
